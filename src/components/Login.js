@@ -6,6 +6,7 @@ import "./Login.css"
 import axios from "axios"
 
 const Login = () => {
+    
 
     // const [passShow, setPassShow] = useState(false);
 
@@ -65,12 +66,34 @@ const Login = () => {
 
   });
 }
-const loginuser = (e) =>{
+const loginuser = async(e) =>{
     console.log(formdata);
     axios.post("https://inventory-pyes.onrender.com/api/login",formdata)
     .then((response)=>{
      console.log(response);
     })
+    const { email, password } = formdata;
+
+    if (email === "") {
+        toast.error("Email is required!", {
+            position: "top-center"
+        });
+    } else if (!email.includes("@")) {
+        toast.warning("Includes @ in your email!", {
+            position: "top-center"
+        });
+    } else if (password === "") {
+        toast.error("Password is required!", {
+            position: "top-center"
+        });
+    } else if (password.length < 6) {
+        toast.error("Password must be 6 char!", {
+            position: "top-center"
+        });
+    } else {
+        console.log("user login succesfully done");
+    }
+    e.preventDefault();
 }
 
 
@@ -105,11 +128,12 @@ const loginuser = (e) =>{
                         <button className='btn' onClick={loginuser}>Login</button>
                         <p>Don't have an Account? <NavLink to="/register">Sign Up</NavLink> </p>
                     </form>
-                    {/* <ToastContainer /> */}
+                    <ToastContainer />
                 </div>
             </div>
             </section>
         </>
+
     )
 }
 
